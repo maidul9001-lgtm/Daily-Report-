@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maidul Haque — Web Developer &amp; Data Entry Specialist</title>
+<meta name="description" content="Maidul Haque — self-taught web &amp; software developer building entirely from an Android phone using Termux.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #0a0f1c;
+    --bg-panel: #101a2e;
+    --bg-panel-2: #0d1526;
+    --text: #e9e7dd;
+    --muted: #8b93a9;
+    --muted-dim: #5b6478;
+    --accent: #f5a623;
+    --accent-dim: #b97e1e;
+    --teal: #4fd1c5;
+    --border: #1e2b47;
+    --red: #ef5b5b;
+    --green: #6bcf7f;
+    --yellow: #f5d76e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(245,166,35,0.06), transparent 40%),
+      radial-gradient(circle at 85% 85%, rgba(79,209,197,0.05), transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .bn { font-family: 'Hind Siliguri', sans-serif; }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: var(--accent); color: #0a0f1c; }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px clamp(20px, 6vw, 64px);
+    backdrop-filter: blur(10px);
+    background: rgba(10,15,28,0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links {
+    display: flex;
+    gap: clamp(14px, 3vw, 28px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+  }
+  .nav-links a {
+    color: var(--muted);
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
+  .nav-links a:focus-visible { outline: 1px dashed var(--accent); outline-offset: 4px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px clamp(20px, 6vw, 64px) 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--teal);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot-row { display: flex; gap: 6px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted-dim); }
+  .dot.on { background: var(--green); }
+
+  .hero h1 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.4rem, 7vw, 4.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .hero h1 .accent { color: var(--accent); }
+
+  .hero-role {
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .hero-role .sep { color: var(--muted-dim); margin: 0 8px; }
+
+  .hero-bn {
+    font-size: 0.92rem;
+    color: var(--muted-dim);
+    margin-bottom: 34px;
+  }
+
+  /* terminal box */
+  .terminal {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 620px;
+    box-shadow: 0 20px 50px -20px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--bg-panel-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .tbtn { width: 10px; height: 10px; border-radius: 50%; }
+  .tbtn.r { background: #ff5f56; }
+  .tbtn.y { background: #ffbd2e; }
+  .tbtn.g { background: #27c93f; }
+  .terminal-title {
+    margin-left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted-dim);
+  }
+  .terminal-body {
+    padding: 18px 16px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    min-height: 168px;
+  }
+  .term-line { margin-bottom: 10px; white-space: pre-wrap; word-break: break-word; }
+  .term-line .prompt { color: var(--teal); }
+  .term-line .path { color: var(--accent); }
+  .term-line .out { color: var(--muted); }
+  .cursor {
+    display: inline-block;
+    width: 7px;
+    height: 1em;
+    background: var(--accent);
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 30px;
+  }
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.15s, background 0.2s, border-color 0.2s;
+    border: 1px solid transparent;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #14100a; }
+  .btn-primary:hover { background: #ffb640; }
+  .btn-ghost { border-color: var(--border); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ===== SECTION SHARED ===== */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 90px clamp(20px, 6vw, 64px);
+  }
+  .section-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .section-path::before { content: '~/'; color: var(--muted-dim); }
+  .section-title {
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ===== ABOUT ===== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 760px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-text p {
+    color: var(--muted);
+    font-size: 1.02rem;
+    margin-bottom: 16px;
+    max-width: 56ch;
+  }
+  .about-text strong { color: var(--text); font-weight: 700; }
+  .about-text .accent-word { color: var(--accent); font-weight: 700; }
+
+  .fact-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .fact-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 0.88rem;
+  }
+  .fact-row:last-child { border-bottom: none; }
+  .fact-key { color: var(--muted-dim); font-family: 'JetBrains Mono', monospace; }
+  .fact-val { color: var(--text); font-weight: 600; text-align: right; }
+
+  /* ===== SKILLS ===== */
+  .skills-term {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem;
+  }
+  .skills-cmd { color: var(--teal); margin-bottom: 16px; }
+  .skills-cmd .p { color: var(--accent); }
+  .skill-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 20px; }
+  @media (max-width: 620px) { .skill-list { grid-template-columns: 1fr; } }
+  .skill-list li { color: var(--text); display: flex; align-items: baseline; gap: 8px; }
+  .skill-list li::before { content: '›'; color: var(--green); font-weight: 700; }
+  .skill-list .desc { color: var(--muted-dim); font-size: 0.8rem; }
+
+  /* ===== WORK ===== */
+  .file-header {
+    display: grid;
+    grid-template-columns: 90px 1fr 110px;
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 620px) { .file-header .col-stack { display: none; } }
+
+  .project-list { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .project-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 110px;
+    align-items: start;
+    gap: 8px;
+    padding: 20px 18px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  @media (max-width: 620px) { .project-row { grid-template-columns: 60px 1fr; } }
+  .project-row:last-child { border-bottom: none; }
+  .project-row:hover { background: rgba(245,166,35,0.04); }
+
+  .file-ext {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(245,166,35,0.1);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 6px;
+    padding: 4px 8px;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .project-name { font-weight: 700; font-size: 1.02rem; margin-bottom: 6px; }
+  .project-name .bn-name { font-family: 'Hind Siliguri', sans-serif; color: var(--teal); font-weight: 600; font-size: 0.92rem; }
+  .project-desc { color: var(--muted); font-size: 0.9rem; max-width: 56ch; }
+
+  .col-stack {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted-dim);
+    text-align: right;
+  }
+  @media (max-width: 620px) { .col-stack { grid-column: 2; text-align: left; margin-top: 4px; } }
+
+  /* ===== CONTACT ===== */
+  .contact-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 34px clamp(20px, 5vw, 44px);
+    text-align: center;
+  }
+  .contact-box p { color: var(--muted); max-width: 46ch; margin: 0 auto 26px; }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+
+  .pending-note {
+    margin-top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--muted-dim);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pending-note .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--yellow); animation: blink 1.4s step-end infinite; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px 90px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--muted-dim);
+  }
+  footer .heart { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top" class="nav-logo">maidul<span>@</span>haque</a>
+  <div class="nav-links">
+    <a href="#about">~/about</a>
+    <a href="#skills">~/skills</a>
+    <a href="#work">~/work</a>
+    <a href="#contact">~/contact</a>
+  </div>
+</nav>
+
+<div id="top" class="hero">
+  <div class="hero-eyebrow">
+    <span class="dot-row"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></span>
+    AVAILABLE FOR WORK
+  </div>
+
+  <h1>Maidul <span class="accent">Haque</span></h1>
+  <div class="hero-role">Web &amp; Software Developer<span class="sep">·</span>Data Entry Specialist</div>
+  <div class="hero-bn bn">মোবাইল দিয়েই সব বানানো — Termux দিয়ে কোড লেখা থেকে ডিপ্লয় পর্যন্ত</div>
+
+  <div class="terminal" role="img" aria-label="Terminal window showing: whoami returns web developer and data entry specialist. uname -a returns Android, Termux, no desktop required. Final line: a script that builds things that work.">
+    <div class="terminal-bar">
+      <span class="tbtn r"></span><span class="tbtn y"></span><span class="tbtn g"></span>
+      <span class="terminal-title">maidul@termux: ~</span>
+    </div>
+    <div class="terminal-body" id="termBody"></div>
+  </div>
+
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#work">See the work →</a>
+    <a class="btn btn-ghost" href="#contact">Get in touch</a>
+  </div>
+</div>
+
+<section id="about">
+  <div class="section-path">about</div>
+  <h2 class="section-title reveal">Built on a touchscreen, not a desk</h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I'm a <strong>self-taught developer from Bangladesh</strong> who builds software entirely from an Android phone. No laptop, no desktop — just <span class="accent-word">Termux</span>, a lot of patience, and a habit of shipping things that work.</p>
+      <p>I work across <strong>HTML, CSS, JavaScript and Python</strong> — building web apps, small tools and automation scripts — and I also take on <strong>data entry and structured-data work</strong> for clients who need accuracy over anything else.</p>
+      <p>Every project below, including this site, was written, tested and deployed from a phone screen. If that sounds like a limitation, I'd argue it's made me better at writing lean, focused code.</p>
+    </div>
+    <div class="fact-card reveal">
+      <div class="fact-row"><span class="fact-key mono">location</span><span class="fact-val">Bangladesh</span></div>
+      <div class="fact-row"><span class="fact-key mono">device</span><span class="fact-val">Android + Termux</span></div>
+      <div class="fact-row"><span class="fact-key mono">stack</span><span class="fact-val">HTML · CSS · JS · Python</span></div>
+      <div class="fact-row"><span class="fact-key mono">also_does</span><span class="fact-val">Data Entry</span></div>
+      <div class="fact-row"><span class="fact-key mono">language</span><span class="fact-val">Bengali · English</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-path">skills</div>
+  <h2 class="section-title reveal">What I work with</h2>
+  <div class="skills-term reveal">
+    <div class="skills-cmd"><span class="p">$</span> pip list --local</div>
+    <ul class="skill-list">
+      <li>HTML &amp; CSS <span class="desc">— structure &amp; styling</span></li>
+      <li>JavaScript <span class="desc">— interactivity, localStorage, PWAs</span></li>
+      <li>Python <span class="desc">— scripts, Flask, SQLite</span></li>
+      <li>Termux <span class="desc">— full dev environment on Android</span></li>
+      <li>Data Entry <span class="desc">— fast, accurate, detail-focused</span></li>
+      <li>Bengali-first UI <span class="desc">— accessible local-language apps</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="work">
+  <div class="section-path">work</div>
+  <h2 class="section-title reveal">Selected projects</h2>
+
+  <div class="reveal">
+    <div class="file-header">
+      <span>type</span><span>project</span><span class="col-stack">stack</span>
+    </div>
+    <div class="project-list">
+
+      <div class="project-row">
+        <span class="file-ext">.html</span>
+        <div>
+          <div class="project-name">Daily Habit Tracker <span class="bn-name">দৈনিক চেকলিস্ট</span></div>
+          <div class="project-desc">Bengali-language habit &amp; checklist app with drag-to-reorder, custom categories, and a clipboard-based backup system — later wrapped into an Android APK.</div>
+        </div>
+        <span class="col-stack">HTML/CSS/JS</span>
+      </div>
+
+      <div class="project-row">
+        <span class="file-ext">.html</span>
+        <div>
+          <div class="project-name">Neumorphic Calculator</div>
+          <div class="project-desc">A soft-UI calculator built with pure CSS shadows and gradients — no libraries, no frameworks.</div>
+        </div>
+        <span class="col-stack">HTML/CSS/JS</span>
+      </div>
+
+      <div class="project-row">
+        <span class="file-ext">.html</span>
+        <div>
+          <div class="project-name">Age &amp; BMI Calculators <span class="bn-name">বয়স ও বিএমআই ক্যালকুলেটর</span></div>
+          <div class="project-desc">Bengali-language health calculators with clear, plain-language results.</div>
+        </div>
+        <span class="col-stack">HTML/JS</span>
+      </div>
+
+      <div class="project-row">
+        <span class="file-ext">.html</span>
+        <div>
+          <div class="project-name">Income &amp; Expense Tracker <span class="bn-name">আয়-ব্যয় ট্র্যাকার</span></div>
+          <div class="project-desc">A lightweight personal finance tracker for logging daily income and spending.</div>
+        </div>
+        <span class="col-stack">HTML/JS</span>
+      </div>
+
+      <div class="project-row">
+        <span class="file-ext">.html</span>
+        <div>
+          <div class="project-name">Interactive Learning Roadmaps</div>
+          <div class="project-desc">Self-contained Bengali-language roadmaps for Python, HTML, CSS, SQL and MySQL with expandable topics and progress tracking.</div>
+        </div>
+        <span class="col-stack">HTML/CSS/JS</span>
+      </div>
+
+      <div class="project-row">
+        <span class="file-ext">.py</span>
+        <div>
+          <div class="project-name">Student Management System</div>
+          <div class="project-desc">A console-based student records system built for Termux, backed by SQLite.</div>
+        </div>
+        <span class="col-stack">Python/SQLite</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-path">contact</div>
+  <h2 class="section-title reveal">Let's work together</h2>
+  <div class="contact-box reveal">
+    <p>Open to web development and data entry work — remote-friendly, detail-focused, and used to working around constraints.</p>
+    <div class="contact-links">
+      <a class="btn btn-ghost" href="https://github.com/maidul9001-lgtm" target="_blank" rel="noopener">GitHub ↗</a>
+      <!-- TODO(Maidul): add your real email/WhatsApp link below and remove the pending note -->
+      <a class="btn btn-ghost" href="#" aria-disabled="true" onclick="return false;">Email — coming soon</a>
+    </div>
+    <div class="pending-note"><span class="dot"></span>email / WhatsApp being added soon</div>
+  </div>
+</section>
+
+<footer>
+  built on Android, shipped from a phone <span class="heart">♥</span> — © <span id="year"></span> Maidul Haque
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var termLines = [
+    { prompt: 'maidul@termux', path: '~$ ', text: 'whoami' },
+    { out: 'web developer · data entry specialist' },
+    { prompt: 'maidul@termux', path: '~$ ', text: 'uname -a' },
+    { out: 'Android · Termux · no desktop required' },
+    { prompt: 'maidul@termux', path: '~$ ', text: './ship_it.sh' },
+    { out: 'building things that work, one commit at a time' }
+  ];
+
+  var termBody = document.getElementById('termBody');
+
+  function renderStatic() {
+    termLines.forEach(function(l) {
+      var div = document.createElement('div');
+      div.className = 'term-line';
+      if (l.text !== undefined) {
+        div.innerHTML = '<span class="prompt">' + l.prompt + '</span><span class="path">' + l.path + '</span>' + l.text;
+      } else {
+        div.innerHTML = '<span class="out">' + l.out + '</span>';
+      }
+      termBody.appendChild(div);
+    });
+    var cur = document.createElement('span');
+    cur.className = 'cursor';
+    termBody.lastChild.appendChild(cur);
+  }
+
+  function typeLine(lineObj, container, cb) {
+    var div = document.createElement('div');
+    div.className = 'term-line';
+    container.appendChild(div);
+
+    if (lineObj.text !== undefined) {
+      var prefix = '<span class="prompt">' + lineObj.prompt + '</span><span class="path">' + lineObj.path + '</span>';
+      div.innerHTML = prefix + '<span class="typed"></span><span class="cursor"></span>';
+      var typedEl = div.querySelector('.typed');
+      var cursorEl = div.querySelector('.cursor');
+      var i = 0;
+      var text = lineObj.text;
+      (function step() {
+        if (i < text.length) {
+          typedEl.textContent += text.charAt(i);
+          i++;
+          setTimeout(step, 38 + Math.random() * 40);
+        } else {
+          cursorEl.remove();
+          cb();
+        }
+      })();
+    } else {
+      div.innerHTML = '<span class="out">' + lineObj.out + '</span>';
+      setTimeout(cb, 260);
+    }
+  }
+
+  function typeAll() {
+    var idx = 0;
+    (function next() {
+      if (idx >= termLines.length) {
+        var cur = document.createElement('span');
+        cur.className = 'cursor';
+        termBody.lastChild.appendChild(cur);
+        return;
+      }
+      typeLine(termLines[idx], termBody, function() {
+        idx++;
+        setTimeout(next, 180);
+      });
+    })();
+  }
+
+  if (reduceMotion) {
+    renderStatic();
+  } else {
+    typeAll();
+  }
+
+  /* scroll reveal */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function(el) { el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>
